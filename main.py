@@ -42,10 +42,18 @@ background = transform.scale(image.load('table.png'), (width, height))
 clock = time.Clock()
 FPS = 60
 
+ball_x = 3
+ball_y = 3
+
+# score_l = 0
+# score_r = 0
+
 font.init()
 font1 = font.SysFont("Arial", 36)
 lose1 = font1.render("PLAYER LEFT LOSE!", True, (180, 0, 0))
 lose2 = font1.render("PLAYER RIGHT LOSE!", True, (180, 0, 0))
+# score_1 = font1.render("Score:", True, (180, 0, 0))
+# score_2 = font1.render("Score:", True, (180, 0, 0))
 
 # левая ракетка
 racket1 = Player("rac.png", 10, 200, 50, 150, 4)
@@ -65,6 +73,23 @@ while game:
 
     if finish != True:
         window.blit(background,(0, 0))
+        # window.blit(score_1, (0, 20))
+        # window.blit(score_2, (500, 20))
+        ball.rect.x += ball_x
+        ball.rect.y += ball_y
+        if sprite.collide_rect(racket1, ball):
+            ball_x *= -1
+        if sprite.collide_rect(racket2, ball):
+            ball_x *= -1
+        if ball.rect.y > 420 or ball.rect.y < 0:
+            ball_y *= -1
+        if ball.rect.x > 750:
+            finish = True
+            window.blit(lose2, (200, 200))
+        if ball.rect.x < -100:
+            finish = True
+            window.blit(lose1, (200, 200))
+
         racket1.update_l()
         racket2.update_r()
         racket1.reset()
